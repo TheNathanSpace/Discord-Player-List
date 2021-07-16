@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "id": "discordstatus",
+  "version": "${version}",
+  "name": "Discord Player List",
+  "description": "",
+  "authors": [
+    "TheKingElessar"
+  ],
+  "contact": {
+    "homepage": "https://thenathan.space",
+    "sources": "https://github.com/thekingelessar"
+  },
+  "license": "CC0-1.0",
+  "icon": "assets/discordplayerlist/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "space.thenathan.discordplayerlist.DiscordPlayerList"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.11.3",
+    "fabric": "*",
+    "minecraft": "1.17.x",
+    "java": ">=16"
+  }
+}
