@@ -1,9 +1,8 @@
 plugins {
     id 'fabric-loom' version '0.12-SNAPSHOT'
     id 'maven-publish'
-
-//    id 'com.github.johnrengelman.shadow' version '7.1.2'
-//    id 'java'
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
+    id 'java'
 }
 
 sourceCompatibility = JavaVersion.VERSION_17
@@ -19,7 +18,11 @@ repositories {
     // Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
     // See https://docs.gradle.org/current/userguide/declaring_repositories.html
     // for more information about repositories.
-    mavenCentral()
+    mavenCentral() // for transitive dependencies
+    maven {
+        name 'm2-dv8tion'
+        url 'https://m2.dv8tion.net/releases'
+    }
 }
 
 dependencies {
@@ -31,22 +34,22 @@ dependencies {
     // Fabric API. This is technically optional, but you probably want it anyway.
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-    // Uncomment the following line to enable the deprecated Fabric API modules.
-    // These are included in the Fabric API production distribution and allow you to update your mod to the latest modules at a later more convenient time.
+    implementation("net.dv8tion:JDA:4.3.0_277")
+    shadow("net.dv8tion:JDA:4.3.0_277")
 
-    // modImplementation "net.fabricmc.fabric-api:fabric-api-deprecated:${project.fabric_version}"
-
-//    implementation shadow ("net.dv8tion:JDA:5.0.0-alpha.16")
 }
 
-//remapJar {
-//    dependsOn tasks.shadowJar
-//    inputFile.set(tasks.shadowJar.archiveFile)
-//}
-//
-//shadowJar {
-//    configurations = [project.configurations.shadow]
-//}
+tasks.remapJar.dependsOn(shadowJar)
+//(tasks.remapJar.input as FileSystemLocationProperty<? extends FileSystemLocation>).set(shadowJar.archivePath)
+
+configurations {
+    shade
+}
+
+shadowJar {
+    configurations = [project.configurations.shadow]
+    relocate 'net.dv8tion', 'space.thenathan.shaded.net.dv8tion'
+}
 
 processResources {
     inputs.property "version", project.version
@@ -70,7 +73,7 @@ java {
 
 jar {
     from("LICENSE") {
-        rename { "${it}_${project.archivesBaseName}"}
+        rename { "${it}_${project.archivesBaseName}" }
     }
 }
 

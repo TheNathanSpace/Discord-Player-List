@@ -1,5 +1,8 @@
 package space.thenathan.discordplayerlist;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -30,12 +33,12 @@ public class ConfigManager
     public void loadConfig()
     {
         CONFIG = SimpleConfig.of("discordstatus").provider(this::provider).request();
-        
+
         DISCORD_BOT_TOKEN = CONFIG.getOrDefault("discord-bot-token", "none");
         MESSAGE_CHANNEL_ID = CONFIG.getOrDefault("message-channel-id", "none");
         GUILD_ID = CONFIG.getOrDefault("guild-id", "none");
-        JOIN_MESSAGE_FORMAT = CONFIG.getOrDefault("join-message-format", "\uD83D\uDFE2  %s is online!");
-        LEAVE_MESSAGE_FORMAT = CONFIG.getOrDefault("leave-message-format", "\uD83D\uDD34  %s is offline.");
+        JOIN_MESSAGE_FORMAT = CONFIG.getOrDefault("join-message-format", " \uD83D\uDFE2  %s is online!");
+        LEAVE_MESSAGE_FORMAT = CONFIG.getOrDefault("leave-message-format", " \uD83D\uDD34  %s is offline.");
     
         if (Arrays.asList(DISCORD_BOT_TOKEN, MESSAGE_CHANNEL_ID, GUILD_ID).contains("none"))
         {
